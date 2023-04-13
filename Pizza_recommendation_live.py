@@ -1,4 +1,5 @@
 
+
 import pandas as pd
 import matplotlib.pyplot as plt
 from sklearn.neighbors import NearestNeighbors
@@ -141,8 +142,7 @@ legend_elements = [Patch(facecolor='Green', edgecolor='k',
 ax.legend(handles=legend_elements, loc='lower right')
 plt.show()
 
-
-return [i[0] for i in all_recs[:n]] # return top n recommended pizzas (not distance values here)
+[i[0] for i in all_recs[:n]] # return top n recommended pizzas (not distance values here)
 
 
 
