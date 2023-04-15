@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html style="font-size: 16px;" lang="en">
+  <link rel="stylesheet" href="cart.css" media="screen">
+  <link rel="stylesheet" href="style.css" media="screen">
+<head>
+    <!-- Head content -->
+</head>
+<body class="u-body u-xl-mode" data-lang="en">
+<header class="u-clearfix u-header u-header" id="sec-c173">
+    <div class="u-clearfix u-sheet u-sheet-1">
+        <a href="index.html" class="u-btn u-btn-round u-button-style u-hover-palette-1-light-1 u-palette-1-base u-radius-50 u-btn-1">HOME
+        </a>
+    </div>
+</header>
+<section class="u-clearfix u-section-1" id="sec-f8b5">
+    <div class="u-clearfix u-sheet u-sheet-1">
+        <div class="row">
+            <div class="column">
+                <h2 class="u-custom-font u-font-oswald u-text u-text-default u-text-palette-2-base u-text-21 font-oswald">Cart Items</h2>
+                <div id="cart-container"></div>
+            </div>
+
+            <!-- Recommended Items Section -->
+            <div class="column">
+                <h2 class="u-custom-font u-font-oswald u-text u-text-default u-text-palette-2-base u-text-21 font-oswald">Recommended Items</h2>
+                <div class="u-expanded-width u-list u-list-2">
+                    <div class="u-repeater u-repeater-2">
+                        <!-- Recommended items will be added here -->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+</body>
+<script>
+    // Script content
+    document.addEventListener('DOMContentLoaded', function () {
+        const cartItems = JSON.parse(localStorage.getItem('cart')) || [];
+        const cartContainer = document.createElement('div');
+
+        cartItems.forEach((item) => {
+            const itemElement = document.createElement('p');
+            itemElement.textContent = `${item.name} - $${item.price}`;
+            cartContainer.appendChild(itemElement);
+        });
+
+        document.querySelector('#cart-container').appendChild(cartContainer);
+    });
+</script>
+</html>
