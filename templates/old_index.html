@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Plot Example</title>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  </head>
+  <body>
+    <form id="plot-form">
+      <label for="data">Data:</label>
+      <input type="text" id="data" name="data">
+      <button type="submit">Plot</button>
+    </form>
+    <div id="plot"></div>
+    <script>
+      $(function() {
+        $("#plot-form").submit(function(event) {
+          event.preventDefault();
+          var data = $("#data").val().split(",").map(function(x) { return parseInt(x); });
+          $.ajax({
+            url: "/plot",
+            method: "POST",
+            contentType: "application/json",
+            data: JSON.stringify({ data: data }),
+            success: function(response) {
+              $("#plot").html("<img src='" + response.image + "'>");
+            }
+          });
+        });
+      });
+    </script>
+  </body>
+</html>
