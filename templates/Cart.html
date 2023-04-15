@@ -35,14 +35,41 @@
 </body>
 <script>
     // Script content
+
+    const cart = JSON.parse(localStorage.cart)
+
+
+    function gen_remove(index) {
+        return (event) => {
+            cart.splice(index, 1);
+            localStorage.setItem('cart', JSON.stringify(cart));
+            location.reload();
+        }
+    }
+
     document.addEventListener('DOMContentLoaded', function () {
         const cartItems = JSON.parse(localStorage.getItem('cart')) || [];
-        const cartContainer = document.createElement('div');
+        const cartContainer = document.createElement('table');
 
-        cartItems.forEach((item) => {
-            const itemElement = document.createElement('p');
-            itemElement.textContent = `${item.name} - $${item.price}`;
-            cartContainer.appendChild(itemElement);
+        cartItems.forEach((item, index) => {
+            const itemRow = document.createElement('tr');
+
+            const itemTag = document.createElement('p');
+            itemTag.textContent = `${item.name} - $${item.price}`;
+            
+            const removeButton = document.createElement('button');
+            removeButton.textContent =  `remove`;
+            removeButton.onclick = gen_remove(index);
+
+            tagCell = document.createElement('th');
+            tagCell.appendChild(itemTag);
+            removeCell = document.createElement('th');
+            removeCell.appendChild(removeButton);
+
+            itemRow.appendChild(tagCell);
+            itemRow.appendChild(removeCell);
+
+            cartContainer.appendChild(itemRow);
         });
 
         document.querySelector('#cart-container').appendChild(cartContainer);
