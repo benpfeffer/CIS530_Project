@@ -25,11 +25,7 @@
             <!-- Recommended Items Section -->
             <div class="column">
                 <h2 class="u-custom-font u-font-oswald u-text u-text-default u-text-palette-2-base u-text-21 font-oswald">Recommended Items</h2>
-                <div class="u-expanded-width u-list u-list-2">
-                    <div class="u-repeater u-repeater-2">
-                        <!-- Recommended items will be added here -->
-                    </div>
-                </div>
+                <div id="recc-container"></div>
             </div>
         </div>
     </div>
@@ -39,12 +35,29 @@
     // Script content
 
     const cart = JSON.parse(localStorage.cart) || [];
+    let pizza_types = [];
 
     function gen_remove(index) {
         return (event) => {
             cart.splice(index, 1);
             localStorage.setItem('cart', JSON.stringify(cart));
             location.reload();
+        }
+    }
+
+    function gen_add(item){
+        return () => {
+            item_obj = {
+                id: item.pizza_type_id,
+                price: 18,
+                name: item.name,
+                index: null
+            }
+
+            cart.push(item_obj);
+            localStorage.setItem('cart', JSON.stringify(cart));
+            location.reload();
+
         }
     }
 
@@ -76,21 +89,70 @@
     }
 
     function populateCharts() {
-        console.log(cart);
+        // console.log(cart);
+        // $.ajax({
+        //     url: `${location.origin}/plot`,
+        //     method: 'POST',
+        //     contentType: 'application/json',
+        //     success: (response) => {
+        //         console.log(response)
+        //     }
+        // })
+    }
+
+    function populateReccomendations() {
+        const recc = document.getElementById('recc-container')
         $.ajax({
-            url: `${location.origin}/plot`,
+            url: `${location.origin}/reccomendations?cart=${cart.map((e) => e.id)}`,
             method: 'POST',
             contentType: 'application/json',
-            success: (response) => {
-                console.log(response)
+            success: (reccomdations) => {
+                container = document.createElement('table');
+
+                pizza_types
+                .filter((pizza_type) => reccomdations.indexOf(pizza_type.pizza_type_id) >= 0)
+                .forEach((item) => {
+                    tableRow = document.createElement('tr');
+
+                    nameCell = document.createElement('th');
+                    itemTag = document.createElement('p');
+                    itemTag.textContent = `${item.name} - $${18}`;
+                    nameCell.appendChild(itemTag);
+                    tableRow.appendChild(nameCell);
+
+                    addCell = document.createElement('th');
+                    addButton = document.createElement('button');
+                    addButton.textContent = 'add';
+                    addButton.onclick = gen_add(item);
+                    addCell.appendChild(addButton);
+                    tableRow.appendChild(addCell);
+
+                    container.appendChild(tableRow);
+                })
+
+                recc.appendChild(container);
+
             }
         })
     }
 
     document.addEventListener('DOMContentLoaded', function () {
-        populateCart();
-        populateCharts();
 
+        $.ajax({
+            url: `${location.origin}/get_pizzas`,
+            method: "GET",
+            success: (data) => {
+                response = JSON.parse(data);
+                pizza_types = response["pizza_types"]
+
+                populateCart();
+                populateCharts();
+                populateReccomendations();
+
+            }
+        });
+
+        
 
 
     });

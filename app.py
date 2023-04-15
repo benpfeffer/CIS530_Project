@@ -5,9 +5,7 @@ import io
 import base64
 from io import BytesIO
 import os
-import json
-
-
+from Pizza_recommendation_live import *
 
 app = Flask(__name__, static_folder='templates')
 
@@ -28,6 +26,12 @@ def cart():
 def get_pizzas():
     with open('config.json', 'r') as file:
         return jsonify(file.read().replace('\n', ''))
+
+@app.route('/reccomendations', methods=["POST"])
+def reccomend():
+    cart = request.args.get('cart')
+    cart_arr = cart.split(',')
+    return get_recs(cart_arr)
 
 @app.route("/plot", methods=["POST"])
 def plot():
