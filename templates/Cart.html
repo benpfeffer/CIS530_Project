@@ -2,6 +2,8 @@
 <html style="font-size: 16px;" lang="en">
   <link rel="stylesheet" href="{{cart_css}}" media="screen">
   <link rel="stylesheet" href="{{style}}" media="screen">
+  <script
+  src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
 <head>
     <!-- Head content -->
 </head>
@@ -36,8 +38,7 @@
 <script>
     // Script content
 
-    const cart = JSON.parse(localStorage.cart)
-
+    const cart = JSON.parse(localStorage.cart) || [];
 
     function gen_remove(index) {
         return (event) => {
@@ -47,11 +48,10 @@
         }
     }
 
-    document.addEventListener('DOMContentLoaded', function () {
-        const cartItems = JSON.parse(localStorage.getItem('cart')) || [];
+    function populateCart() {
         const cartContainer = document.createElement('table');
 
-        cartItems.forEach((item, index) => {
+        cart.forEach((item, index) => {
             const itemRow = document.createElement('tr');
 
             const itemTag = document.createElement('p');
@@ -73,6 +73,26 @@
         });
 
         document.querySelector('#cart-container').appendChild(cartContainer);
+    }
+
+    function populateCharts() {
+        console.log(cart);
+        $.ajax({
+            url: `${location.origin}/plot`,
+            method: 'POST',
+            contentType: 'application/json',
+            success: (response) => {
+                console.log(response)
+            }
+        })
+    }
+
+    document.addEventListener('DOMContentLoaded', function () {
+        populateCart();
+        populateCharts();
+
+
+
     });
 </script>
 </html>

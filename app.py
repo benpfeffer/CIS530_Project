@@ -5,6 +5,9 @@ import io
 import base64
 from io import BytesIO
 import os
+import json
+
+
 
 app = Flask(__name__, static_folder='templates')
 
@@ -21,6 +24,10 @@ def cart():
     cart_css = os.path.join('templates', 'Cart.css')
     return render_template("Cart.html", style = style, cart_css = cart_css)
 
+@app.route('/get_pizzas')
+def get_pizzas():
+    with open('config.json', 'r') as file:
+        return jsonify(file.read().replace('\n', ''))
 
 @app.route("/plot", methods=["POST"])
 def plot():
