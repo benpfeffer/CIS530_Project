@@ -3,3 +3,4 @@ node_modules/
 servers/
 config.json
 build
+__pycache__/app.cpython-310.pyc
