@@ -89,10 +89,10 @@ def plot_recs(cart):
     dist = distanceDf.copy()
     dist.columns = ["Indices", "Dist"]
 
-    font = {'size'   : 22}
+    font = {'size'   : 10}
     matplotlib.rc('font', **font)
 
-    fig = plt.figure(figsize=[15,12])
+    fig = plt.figure(figsize=[30,10])
     plt.subplots_adjust(left=-1,
                         bottom=0.1,
                         right=0.9,
@@ -102,7 +102,7 @@ def plot_recs(cart):
 
     # Mid point of left and right x-positions
     mid = (fig.subplotpars.right + fig.subplotpars.left)/2
-    fig.suptitle("Similarity between each pizza in the cart",x=mid, fontsize=40)
+    # fig.suptitle("Similarity between each pizza in the cart",x=mid, fontsize=40)
     for i,plot in enumerate(plot_data):
         ax = plt.subplot(1, len(cart), i + 1)
         
@@ -121,14 +121,16 @@ def plot_recs(cart):
         #    ax.set_yticks(np.arange(len(df.Indices)), labels=["-"]*len(df.Indices))
         ax.set_xlabel("Cosine Similarity")
         ax.set_title(cart[i])
-    plt.show()
+    
+    plt.tight_layout(h_pad=20)
+    # plt.show()
 
 
     # Plot combined graph
 
     font = {'size'   : 12}
     matplotlib.rc('font', **font)
-    plt.figure(figsize=[30,10])
+    fig2 = plt.figure(figsize=[30,10])
     ax = plt.gca()
     df = dist[dist.Indices.isin(trueInd)].reset_index(drop=True)
     df["Color"] = "LightBlue"
@@ -144,8 +146,10 @@ def plot_recs(cart):
                        Patch(facecolor='LightBlue', edgecolor='k',
                              label='Not Recommended')]
     ax.legend(handles=legend_elements, loc='lower right')
-    plt.show()
+    # plt.show()
 
+
+    return fig, fig2
 
 
 

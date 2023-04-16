@@ -30,6 +30,7 @@
         </div>
     </div>
 </section>
+<div id="plot"></div>
 </body>
 <script>
     // Script content
@@ -90,14 +91,37 @@
 
     function populateCharts() {
         // console.log(cart);
-        // $.ajax({
-        //     url: `${location.origin}/plot`,
-        //     method: 'POST',
-        //     contentType: 'application/json',
-        //     success: (response) => {
-        //         console.log(response)
-        //     }
-        // })
+        
+        $.ajax({
+            url: `/plot1?cart=${cart.map((e)=>e.id)}`,
+            method: "POST",
+            contentType: "application/json",
+            success: function(response1) {
+                str = "<div><img src='" + response1.image + "' width='700' height='300' id='fig1'>";
+                $.ajax({
+                    url: `/plot2?cart=${cart.map((e)=>e.id)}`,
+                    method: "POST",
+                    contentType: "application/json",
+                    success: function(response2) {
+                        str+="<img src='" + response2.image + "' width='700' height='300' id='fig2'></div>";
+                        $.ajax({
+                            url: `/plot1?cart=${cart.map((e)=>e.id)}`,
+                            method: "POST",
+                            contentType: "application/json",
+                            success: function(response3) {
+
+                                str+="<div style='text-align:center;''><img src='" + response3.image + "' width='900' height='500' id='fig3'></div>"
+
+                                $("#plot").html(str);
+                            }
+                        });
+
+                        // $("#plot").html("<div><img src='" + response1.image + "' width='700' height='300' id='fig1'><img src='" + response2.image + "' width='700' height='300' id='fig2'></div>");
+                    }
+                });
+            }
+        });
+        
     }
 
     function populateReccomendations() {
@@ -157,4 +181,5 @@
 
     });
 </script>
+
 </html>

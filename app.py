@@ -6,6 +6,8 @@ import base64
 from io import BytesIO
 import os
 from Pizza_recommendation_live import *
+from Pizza_recommendation_plots import *
+
 
 app = Flask(__name__, static_folder='templates')
 
@@ -33,18 +35,30 @@ def reccomend():
     cart_arr = cart.split(',')
     return get_recs(cart_arr)
 
-@app.route("/plot", methods=["POST"])
-def plot():
-    data = request.get_json()["data"]
-    x = np.arange(len(data))
-    y = np.array(data)
-    # Generate the figure **without using pyplot**.
-    fig = Figure()
-    ax = fig.subplots()
-    ax.plot(x, y)
-    # Save it to a temporary buffer.
+@app.route("/plot1", methods=["POST"])
+def plot1():
+
+    cart = request.args.get('cart')
+    cart_arr = cart.split(',')
+
+    fig, _fig2 = plot_recs(cart_arr)
+
     buf = BytesIO()
     fig.savefig(buf, format="png")
+    # Embed the result in the html output.
+    data = base64.b64encode(buf.getbuffer()).decode("ascii")
+    return jsonify(image=f"data:image/png;base64,{data}")
+
+@app.route("/plot2", methods=["POST"])
+def plot2():
+
+    cart = request.args.get('cart')
+    cart_arr = cart.split(',')
+
+    _fig, fig2 = plot_recs(cart_arr)
+
+    buf = BytesIO()
+    fig2.savefig(buf, format="png")
     # Embed the result in the html output.
     data = base64.b64encode(buf.getbuffer()).decode("ascii")
     return jsonify(image=f"data:image/png;base64,{data}")
