@@ -7,7 +7,7 @@ from io import BytesIO
 import os
 from Pizza_recommendation_live import *
 from Pizza_recommendation_plots import *
-
+from plot_metrics import *
 
 app = Flask(__name__, static_folder='templates')
 
@@ -59,6 +59,17 @@ def plot2():
 
     buf = BytesIO()
     fig2.savefig(buf, format="png")
+    # Embed the result in the html output.
+    data = base64.b64encode(buf.getbuffer()).decode("ascii")
+    return jsonify(image=f"data:image/png;base64,{data}")
+
+@app.route("/plot3", methods=["post"])
+def plot3():
+
+    fig = plot_metrics()
+
+    buf = BytesIO()
+    fig.savefig(buf, format="png")
     # Embed the result in the html output.
     data = base64.b64encode(buf.getbuffer()).decode("ascii")
     return jsonify(image=f"data:image/png;base64,{data}")
