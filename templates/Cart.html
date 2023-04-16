@@ -97,7 +97,8 @@
             method: "POST",
             contentType: "application/json",
             success: function(response1) {
-                str = "<div><img src='" + response1.image + "' width='700' height='300' id='fig1'>";
+                str = `<div class='title'><p>` + "title" + `</p></div>`
+                str += "<div><img src='" + response1.image + "' width='700' height='300' id='fig1'>";
                 $.ajax({
                     url: `/plot2?cart=${cart.map((e)=>e.id)}`,
                     method: "POST",
@@ -109,7 +110,7 @@
                             method: "POST",
                             contentType: "application/json",
                             success: function(response3) {
-
+                                str += `<div class="title"><p>` + "title" + `</p></div>`
                                 str+="<div style='text-align:center;''><img src='" + response3.image + "' width='900' height='500' id='fig3'></div>"
 
                                 $("#plot").html(str);

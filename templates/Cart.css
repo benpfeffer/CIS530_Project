@@ -10,3 +10,8 @@
 .font-oswald {
   font-family: 'Oswald', sans-serif;
 }
+
+.title {
+  left: 50%;
+  position: relative;
+}
