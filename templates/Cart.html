@@ -105,7 +105,7 @@
                     success: function(response2) {
                         str+="<img src='" + response2.image + "' width='700' height='300' id='fig2'></div>";
                         $.ajax({
-                            url: `/plot3`,
+                            url: `/plot1?cart=${cart.map((e)=>e.id)}`,
                             method: "POST",
                             contentType: "application/json",
                             success: function(response3) {
