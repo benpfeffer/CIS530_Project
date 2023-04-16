@@ -1,6 +1,5 @@
 import matplotlib
-import matplotlib.pyplot as plt
-from matplotlib.offsetbox import OffsetImage, AnnotationBbox
+from matplotlib.figure import Figure
 import pandas as pd
 
 def plot_metrics():
@@ -9,8 +8,8 @@ def plot_metrics():
     font = {'size'   : 22}
     matplotlib.rc('font', **font)
 
-    fig = plt.figure(figsize=[35,12])
-    plt.subplots_adjust(left=-1,
+    fig = Figure(figsize=[35,12])
+    fig.subplots_adjust(left=-1,
                         bottom=0.1,
                         right=0.9,
                         top=0.9,
@@ -20,21 +19,17 @@ def plot_metrics():
     # Mid point of left and right x-positions
     mid = (fig.subplotpars.right + fig.subplotpars.left)/2
 
-    # reading the image
-    image = plt.imread('pizza.png')
 
-    # OffsetBox
-    image_box = OffsetImage(image, zoom=0.05)
-
+    axs = fig.subplots(1,len(df.columns[:-1]))
     for i,metric in enumerate(df.columns[:-1]):
-        ax = plt.subplot(1, len(df), i + 1)    
-        for x0, y0 in zip(df.index, df[metric]):
-            ab = AnnotationBbox(image_box, (x0, y0), frameon=False)
-            ax.add_artist(ab)
+        ax = axs[i]
 
         ax.plot(df[metric], linewidth=7.0)
         if(i==0):
             ax.set_ylabel("Score")
         ax.set_xlabel(metric)
         ax.axvline(5, linestyle="--")
+
+    fig.tight_layout()
+
     return fig
