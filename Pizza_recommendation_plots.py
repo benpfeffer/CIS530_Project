@@ -1,7 +1,8 @@
 
 
 import pandas as pd
-import matplotlib.pyplot as plt
+#import matplotlib.pyplot as plt
+from matplotlib.figure import Figure
 from sklearn.neighbors import NearestNeighbors
 import numpy as np
 import matplotlib
@@ -92,8 +93,8 @@ def plot_recs(cart):
     font = {'size'   : 10}
     matplotlib.rc('font', **font)
 
-    fig = plt.figure(figsize=[30,10])
-    plt.subplots_adjust(left=-1,
+    fig = Figure(figsize=[30,10])
+    fig.subplots_adjust(left=-1,
                         bottom=0.1,
                         right=0.9,
                         top=0.9,
@@ -103,8 +104,9 @@ def plot_recs(cart):
     # Mid point of left and right x-positions
     mid = (fig.subplotpars.right + fig.subplotpars.left)/2
     # fig.suptitle("Similarity between each pizza in the cart",x=mid, fontsize=40)
+    axs = fig.subplots(1, len(cart))
     for i,plot in enumerate(plot_data):
-        ax = plt.subplot(1, len(cart), i + 1)
+        ax = axs[i]
         
         # Get sorted values
         df = plot.merge(dist).sort_values("Dist")
@@ -122,7 +124,7 @@ def plot_recs(cart):
         ax.set_xlabel("Cosine Similarity")
         ax.set_title(cart[i])
     
-    plt.tight_layout(h_pad=20)
+    fig.tight_layout(h_pad=20)
     # plt.show()
 
 
@@ -130,8 +132,8 @@ def plot_recs(cart):
 
     font = {'size'   : 12}
     matplotlib.rc('font', **font)
-    fig2 = plt.figure(figsize=[30,10])
-    ax = plt.gca()
+    fig2 = Figure(figsize=[30,10])
+    ax = fig2.gca()
     df = dist[dist.Indices.isin(trueInd)].reset_index(drop=True)
     df["Color"] = "LightBlue"
     df.Color.iloc[:n] = "Green"
