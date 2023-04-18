@@ -12,6 +12,10 @@
 }
 
 .title {
-  left: 50%;
+  left: 40%;
+  position: relative;
+}
+.title2 {
+  left: 35%;
   position: relative;
 }
