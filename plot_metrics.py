@@ -28,8 +28,9 @@ def plot_metrics():
         ax.plot(df[metric], linewidth=7.0)
         if(i==0):
             ax.set_ylabel("Score")
-        ax.set_xlabel(metric)
+        ax.set_xlabel("Number of Recs")
         ax.set_xticks(np.arange(len(df)),df["NumRec"])
+        ax.set_title(metric)
         ax.axvline(4, linestyle="--")
 
     fig.tight_layout()
