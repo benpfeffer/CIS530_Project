@@ -4,6 +4,7 @@ import pandas as pd
 import numpy as np
 
 def plot_metrics():
+    val = pd.read_csv('valMetrics.csv').drop("Unnamed: 0", axis=1)
     df = pd.read_csv('metrics.csv').drop("Unnamed: 0", axis=1)
     
     font = {'size'   : 22}
@@ -25,7 +26,8 @@ def plot_metrics():
     for i,metric in enumerate(df.columns[:-1]):
         ax = axs[i]
 
-        ax.plot(df[metric], linewidth=7.0)
+        l1, = ax.plot(val[metric], linewidth=7.0)
+        l2, = ax.plot(df[metric], linewidth=7.0)
         if(i==0):
             ax.set_ylabel("Score")
         ax.set_xlabel("Number of Recs")
@@ -33,6 +35,7 @@ def plot_metrics():
         ax.set_title(metric)
         ax.axvline(4, linestyle="--")
 
+    fig.legend((l1, l2), ("Val", "Test"), loc='upper right')
     fig.tight_layout()
 
     return fig
