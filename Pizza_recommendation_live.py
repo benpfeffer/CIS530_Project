@@ -42,7 +42,8 @@ def get_recs(cart):
 
     simple = moDf[["order_id", "quantity", "pizza_type_id"]]
     copyDf = simple.copy()
-    copyDf = copyDf[copyDf.quantity==1]
+    #copyDf = copyDf[copyDf.quantity==1]
+    copyDf['quantity'] = 1
 
 
     copyDf = copyDf.drop_duplicates().reset_index(drop=True)

@@ -1,6 +1,7 @@
 import matplotlib
 from matplotlib.figure import Figure
 import pandas as pd
+import numpy as np
 
 def plot_metrics():
     df = pd.read_csv('metrics.csv').drop("Unnamed: 0", axis=1)
@@ -28,7 +29,8 @@ def plot_metrics():
         if(i==0):
             ax.set_ylabel("Score")
         ax.set_xlabel(metric)
-        ax.axvline(5, linestyle="--")
+        ax.set_xticks(np.arange(len(df)),df["NumRec"])
+        ax.axvline(4, linestyle="--")
 
     fig.tight_layout()
 
