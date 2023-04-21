@@ -27,18 +27,21 @@
   ucontainerlayout = 1;
   ubtn = 1;
 
+  // each pizza type is dynamically loaded, the HTML for each pizza 'block' is created using this function
   function getBlock(item){
-
     return `<div class="u-container-style u-list-item u-repeater-item u-white u-list-item-${ulistitem}"><div class="u-container-layout u-similar-container u-valign-top-lg u-valign-top-md u-valign-top-sm u-valign-top-xl u-container-layout-${ucontainerlayout}"><img alt="" class="u-expanded-width-xs u-image u-image-default u-image-${uimage}" src="https://thumbs.dreamstime.com/b/pizza-rustic-italian-mozzarella-cheese-basil-leaves-35669930.jpg"><div class="u-align-left-xs u-container-style u-expanded-width-xs u-group u-video-cover u-group-${ugroup}"><div class="u-container-layout u-valign-middle-xs u-container-layout-${ucontainerlayout}"><h3 class="u-custom-font u-font-oswald u-text u-text-${utext}">${item.name}</h3><p class="u-text u-text-default u-text-${utext++}">${item.ingredients}</p><h6 class="u-text u-text-palette-3-base u-text-${utext}">$${item.price}</h6><a href="#" class="u-btn u-btn-rectangle u-button-style u-grey-10 u-btn-${ubtn}">add to cart</a></div></div></div></div>`
-
   }
 
+// on document load:
 document.addEventListener('DOMContentLoaded', () => {
 
+  // ajax call to get the total number of pizzas in the menu, along with their prices and other info
   $.ajax({
     url: `${location.origin}/get_pizzas`,
     method: "GET",
     success: (data) => {
+
+      // parsing the pizza data and adding all the pizza blocks to the page
       response = JSON.parse(data);
       pizza_types = response["pizza_types"]
       str = '';
@@ -48,6 +51,7 @@ document.addEventListener('DOMContentLoaded', () => {
       
       $('#menu').html(str);
 
+      // adding interactivity through buttons and handling cart storage in localstorage
       const cartButton = document.getElementById('cart-button');
       const addToCartButtons = document.querySelectorAll('.u-btn-rectangle');
       const cartItems = JSON.parse(localStorage.getItem('cart')) || [];
@@ -83,6 +87,7 @@ document.addEventListener('DOMContentLoaded', () => {
     <meta property="og:type" content="website">
   <meta data-intl-tel-input-cdn-path="intlTelInput/"></head>
   <body data-home-page="Home.html" data-home-page-title="Home" class="u-body u-xl-mode" data-lang="en"><header class="u-clearfix u-header u-header" id="sec-c173"><div class="u-clearfix u-sheet u-sheet-1">
+    <!-- link to cart page -->
     <a href="cart" class="u-btn u-btn-round u-button-style u-hover-palette-1-light-1 u-palette-1-base u-radius-50 u-btn-1" id="cart-button">CART</a>
         </a>
       </div></header>
@@ -92,6 +97,7 @@ document.addEventListener('DOMContentLoaded', () => {
         <p class="u-text u-text-2">Unique pizzas hand crafted to you desired taste. Our unique recipe wood fired pizzas are a delicous way to treat your tastebuds.</p>
         <div class="u-expanded-width u-list u-list-1">
           <div class="u-repeater u-repeater-1" id="menu">
+            <!-- where the menu will be loaded -->
           </div>
         </div>
       </div>

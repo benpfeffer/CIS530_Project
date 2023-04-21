@@ -5,7 +5,6 @@
   <script
   src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
 <head>
-    <!-- Head content -->
 </head>
 <body class="u-body u-xl-mode" data-lang="en">
 <header class="u-clearfix u-header u-header" id="sec-c173">
@@ -17,12 +16,12 @@
 <section class="u-clearfix u-section-1" id="sec-f8b5">
     <div class="u-clearfix u-sheet u-sheet-1">
         <div class="row">
+            <!-- cart items -->
             <div class="column">
                 <h2 class="u-custom-font u-font-oswald u-text u-text-default u-text-palette-2-base u-text-21 font-oswald">Cart Items</h2>
                 <div id="cart-container"></div>
             </div>
-
-            <!-- Recommended Items Section -->
+            <!-- reccomended items -->
             <div class="column">
                 <h2 class="u-custom-font u-font-oswald u-text u-text-default u-text-palette-2-base u-text-21 font-oswald">Recommended Items</h2>
                 <div id="recc-container"></div>
@@ -38,6 +37,7 @@
     const cart = JSON.parse(localStorage.cart) || [];
     let pizza_types = [];
 
+    // generate function for onclick event to the remove button (from cart)
     function gen_remove(index) {
         return (event) => {
             cart.splice(index, 1);
@@ -46,6 +46,7 @@
         }
     }
 
+    // generate function for onclick event for the add button (from reccomended)
     function gen_add(item){
         return () => {
             item_obj = {
@@ -62,6 +63,7 @@
         }
     }
 
+    // function to populate the cart html with data from local storage
     function populateCart() {
         const cartContainer = document.createElement('table');
 
@@ -89,8 +91,8 @@
         document.querySelector('#cart-container').appendChild(cartContainer);
     }
 
+    // populate the charts using several nested ajax calls querying the plots APIs
     function populateCharts() {
-        // console.log(cart);
         
         $.ajax({
             url: `/plot1?cart=${cart.map((e)=>e.id)}`,
@@ -116,8 +118,6 @@
                                 $("#plot").html(str);
                             }
                         });
-
-                        // $("#plot").html("<div><img src='" + response1.image + "' width='700' height='300' id='fig1'><img src='" + response2.image + "' width='700' height='300' id='fig2'></div>");
                     }
                 });
             }
@@ -125,6 +125,7 @@
         
     }
 
+    // populate the reccomendations tab by querying the reccomendations API
     function populateReccomendations() {
         const recc = document.getElementById('recc-container')
         $.ajax({
@@ -161,6 +162,8 @@
         })
     }
 
+    // on document load, run an ajax call to get the total number of pizzas
+    // on success, populate the webpage
     document.addEventListener('DOMContentLoaded', function () {
 
         $.ajax({
